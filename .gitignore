@@ -1,0 +1,6 @@
+__pycache__/
+*.py[cod]
+.venv/
+.env
+demo_workspace/output/
+.ai-memory/
