@@ -6,7 +6,11 @@ from typing import Callable
 import json
 
 
-TASK = "读取 notes.txt，统计非空行数，将结果保存到 output/report.json。"
+TASK = (
+    "读取 notes.txt，统计非空行数，将结果保存到 output/report.json。"
+    "输出必须是 JSON 对象，且只能包含两个字段：source 固定为字符串 notes.txt，"
+    "non_empty_lines 为实际统计得到的非空行数整数。不要添加其他字段。"
+)
 MAX_CHARS = 16_000
 
 
@@ -68,10 +72,14 @@ def verify_report(root: Path) -> bool:
     try:
         source = (root / "notes.txt").read_text(encoding="utf-8")
         report = json.loads((root / "output/report.json").read_text(encoding="utf-8"))
-        return report == {
-            "source": "notes.txt",
-            "non_empty_lines": sum(bool(line.strip()) for line in source.splitlines()),
-        }
+        return (
+            isinstance(report, dict)
+            and type(report.get("non_empty_lines")) is int
+            and report == {
+                "source": "notes.txt",
+                "non_empty_lines": sum(bool(line.strip()) for line in source.splitlines()),
+            }
+        )
     except (OSError, ValueError, UnicodeError):
         return False
 

@@ -2,5 +2,8 @@ __pycache__/
 *.py[cod]
 .venv/
 .env
+.env.*
+!.env.example
+.runs/
 demo_workspace/output/
 .ai-memory/

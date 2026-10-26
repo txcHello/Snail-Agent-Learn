@@ -68,6 +68,21 @@ class HarnessTests(unittest.TestCase):
         result = execute_tool(self.root, ToolCall("run_shell", {"path": "."}))
         self.assertFalse(result["ok"])
 
+    def test_correct_count_with_wrong_report_fields_is_rejected(self):
+        # 真实模型曾返回这个形状：计数正确，但输出字段不符合约定。
+        (self.root / "output").mkdir()
+        (self.root / "output/report.json").write_text(
+            '{"file": "notes.txt", "total_lines": 5, "non_empty_lines": 3}', encoding="utf-8",
+        )
+        self.assertFalse(verify_report(self.root))
+
+    def test_report_count_must_be_an_integer(self):
+        (self.root / "output").mkdir()
+        (self.root / "output/report.json").write_text(
+            '{"source": "notes.txt", "non_empty_lines": 3.0}', encoding="utf-8",
+        )
+        self.assertFalse(verify_report(self.root))
+
 
 if __name__ == "__main__":
     unittest.main()

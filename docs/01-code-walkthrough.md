@@ -4,6 +4,8 @@
 
 本课任务：读取 `notes.txt`，统计非空行数，写入 `output/report.json`。
 
+任务描述还明确要求结果只包含 `source` 和 `non_empty_lines` 两个字段，与验收器保持一致。
+
 ## 第 1 步：让“下一步行动”有明确的结构
 
 ```python
@@ -157,13 +159,17 @@ if len(observations) == 2:
 ```python
 source = (root / "notes.txt").read_text(encoding="utf-8")
 report = json.loads((root / "output/report.json").read_text(encoding="utf-8"))
-return report == {
-    "source": "notes.txt",
-    "non_empty_lines": sum(bool(line.strip()) for line in source.splitlines()),
-}
+return (
+    isinstance(report, dict)
+    and type(report.get("non_empty_lines")) is int
+    and report == {
+        "source": "notes.txt",
+        "non_empty_lines": sum(bool(line.strip()) for line in source.splitlines()),
+    }
+)
 ```
 
-这里只验证结果是否符合这个练习任务。真实编程任务的验收可能是测试命令、文件差异或其他可检查的条件，需要按具体任务定义。
+类型检查要求计数确实为整数，防止 Python 中 `3.0 == 3` 这样的宽松比较放过错误类型。这里只验证结果是否符合这个练习任务。真实编程任务的验收可能是测试命令、文件差异或其他可检查的条件，需要按具体任务定义。
 
 本课还没有区分不同运行的产物，因此正确的旧文件也可以通过验收。后续会加入运行标识、执行记录和检查点，学习这个边界怎样收紧。
 
