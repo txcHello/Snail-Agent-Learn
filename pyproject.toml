@@ -1,0 +1,10 @@
+[project]
+name = "snail-agent"
+version = "0.1.0"
+description = "从零学习的最小文件 Agent"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = []
+
+[tool.uv]
+package = false

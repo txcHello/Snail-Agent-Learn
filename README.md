@@ -4,12 +4,20 @@
 
 Python 3.10+，仅使用标准库。全部实现都在 [agent.py](agent.py)，只有一个只读工具 `read_file`。
 
+使用 [uv](https://docs.astral.sh/uv/guides/projects/) 管理项目：`pyproject.toml` 声明项目和依赖，`.python-version` 选择开发用的 Python 3.14，`uv.lock` 锁定依赖。当前第三方依赖为空；本地 `.venv/` 已被 Git 忽略。
+
 ## 运行
+
+先安装 uv，再在项目目录同步环境：
+
+```powershell
+uv sync --locked
+```
 
 保留已有的本地 `.env` 即可。首次配置时，将 `.env.example` 复制为 `.env`，填入自己的 `DEEPSEEK_API_KEY`。
 
 ```powershell
-python -X utf8 agent.py
+uv run python -X utf8 agent.py
 ```
 
 默认任务：读取 `demo_workspace/notes.txt`，统计非空行数并回答。样例有 **4 个非空行**。
@@ -26,10 +34,12 @@ python -X utf8 agent.py
 也可以指定任务：
 
 ```powershell
-python -X utf8 agent.py "读取 notes.txt，概括文件内容"
+uv run python -X utf8 agent.py "读取 notes.txt，概括文件内容"
 ```
 
 路径相对于 `demo_workspace/`。程序会显示模型调用轮数、工具请求、工具结果和最终回答。每次启动是一个新任务。
+
+后续添加依赖使用 `uv add 包名`，删除依赖使用 `uv remove 包名`；这两个命令会同步更新配置、锁文件与本地环境。运行时使用 `uv run`，无需手动激活虚拟环境。
 
 ## 按顺序读代码
 
