@@ -1,73 +1,95 @@
-# Snail-Agent：最小 Agent 循环
+# Snail-Agent：LangGraph 最小 Agent
 
-当前只学习一件事：**调用真实模型 → 执行工具 → 回传结果 → 再次调用模型**。
+当前学习目标：**用 LangGraph 表达“模型 → 工具 → 模型”的循环**。
 
-Python 3.10+，仅使用标准库。全部实现都在 [agent.py](agent.py)，只有一个只读工具 `read_file`。
-
-使用 [uv](https://docs.astral.sh/uv/guides/projects/) 管理项目：`pyproject.toml` 声明项目和依赖，`.python-version` 选择开发用的 Python 3.14，`uv.lock` 锁定依赖。当前第三方依赖为空；本地 `.venv/` 已被 Git 忽略。
+实现保留在 [agent.py](agent.py) 一个文件中，使用真实 DeepSeek 模型和一个只读工具 `read_file`。使用 Python 3.10+；开发解释器由 `.python-version` 选择为 Python 3.14。
 
 ## 运行
 
-先安装 uv，再在项目目录同步环境：
+使用 uv 管理依赖与环境。首次拉取或更新依赖后执行：
 
 ```powershell
 uv sync --locked
 ```
 
-保留已有的本地 `.env` 即可。首次配置时，将 `.env.example` 复制为 `.env`，填入自己的 `DEEPSEEK_API_KEY`。
+保留已有的本地 `.env` 即可。首次配置时，将 `.env.example` 复制为 `.env`，填入自己的 `DEEPSEEK_API_KEY`。默认模型仍为 `deepseek-flash`，地址仍为 `https://api.deepseek.com`；环境变量优先于文件配置。
 
 ```powershell
 uv run python -X utf8 agent.py
 ```
 
-默认任务：读取 `demo_workspace/notes.txt`，统计非空行数并回答。样例有 **4 个非空行**。
-
-本次真实 API 运行共调用模型 2 次，终端输出摘录如下（省略文件正文和回答中的逐行说明）：
-
-```text
-[1] 调用模型
-    工具请求：read_file {"path": "notes.txt"}
-[2] 调用模型
-非空行数统计：4 行
-```
-
-也可以指定任务：
+默认任务：读取 `demo_workspace/notes.txt`，统计非空行数。样例包含 **4 个非空行**。指定其他任务：
 
 ```powershell
 uv run python -X utf8 agent.py "读取 notes.txt，概括文件内容"
 ```
 
-路径相对于 `demo_workspace/`。程序会显示模型调用轮数、工具请求、工具结果和最终回答。每次启动是一个新任务。
+工具路径相对于 `demo_workspace/`。终端显示模型调用次数、工具请求、工具结果与最终回答。`uv add 包名` / `uv remove 包名` 用于后续维护依赖；提交 `pyproject.toml` 和 `uv.lock`，不提交本地 `.venv/`。
 
-后续添加依赖使用 `uv add 包名`，删除依赖使用 `uv remove 包名`；这两个命令会同步更新配置、锁文件与本地环境。运行时使用 `uv run`，无需手动激活虚拟环境。
+## 第一步：状态和工具
 
-## 按顺序读代码
+`AgentState` 继承 `MessagesState`，保存两项内容：
 
-1. **`TOOLS`**：告诉模型工具叫什么、做什么、接受什么参数。
-2. **`load_config()`**：读取 `.env`，环境变量优先，不在源码中存放密钥。
-3. **`call_model()`**：发送一次 DeepSeek 请求，返回一条 assistant 消息。
-4. **`execute_tool()`**：检查工具请求并真正读取文件，返回内容或错误。
-5. **`run()`**：将上述步骤串成循环。
+- `messages`：消息历史，LangGraph 自动合并节点返回的新增消息。
+- `model_calls`：模型调用次数，用来限制每个任务最多调用 6 次。
 
-`messages` 是本次运行的消息历史：
+`@tool` 将 `read_file(path: str)` 转为模型可调用的工具，工具说明来自函数文档，参数说明来自类型标注。函数内部继续检查路径与读取上限。
 
-```text
-system     告诉模型如何使用工具
-user       用户任务
-assistant  模型请求 read_file
-tool       程序返回真实文件内容，tool_call_id 对应请求的 id
-assistant  模型基于读取结果回答，或者继续请求工具
+## 第二步：两个节点和三条边
+
+`ChatDeepSeek(...).bind_tools([read_file])` 告诉模型有哪些工具。模型节点调用它，返回新增消息与新的调用次数：
+
+```python
+return {"messages": [message], "model_calls": turn}
 ```
 
-核心是：先把模型返回的消息追加到 `messages`，再追加每个工具的执行结果。下一轮 API 调用会收到这些历史消息。一次返回多个工具请求时，依次执行，并回传全部结果后再调用模型。
+工具节点使用框架提供的 `ToolNode`，负责执行工具、将错误作为反馈，并生成带有对应 `tool_call_id` 的工具结果消息。
 
-## 本步边界
+图的核心定义：
 
-- 使用真实 `deepseek-flash`，无模拟模型、无额外适配类。
-- 工具只读练习目录中的 UTF-8 文件，每次最多读取 16000 字符；目录检查不是操作系统级沙箱。
-- 最多调用模型 6 轮，每次 HTTP 请求默认超时 30 秒；网络错误直接退出，不自动重试。
-- 模型不再请求工具并返回非空文本时，循环结束。这只是结束条件，本步没有独立的答案验收器。
-- 仅展示终端过程；消息保存在内存中。本步没有报告写入、持久轨迹或断点恢复。
-- 旧课程代码已从当前版本移除，可从 Git 历史找回。本地密钥、已有运行记录和 IDE 文件不纳入提交。
+```python
+graph = StateGraph(AgentState)
+graph.add_node("model", call_model)
+graph.add_node("tools", ToolNode([read_file], handle_tool_errors=True))
+graph.add_edge(START, "model")
+graph.add_conditional_edges("model", tools_condition)
+graph.add_edge("tools", "model")
+return graph.compile()
+```
 
-工具调用协议参考 [DeepSeek 官方文档](https://api-docs.deepseek.com/guides/tool_calls/)。
+`tools_condition` 检查模型最后一条消息：有工具请求就去 `tools`，没有就走向结束。
+
+```mermaid
+flowchart LR
+    START --> model[模型节点]
+    model -->|有工具请求| tools[工具节点]
+    tools --> model
+    model -->|没有工具请求| END
+```
+
+## 第三步：运行图并观察结果
+
+`run()` 调用 `graph.stream(..., stream_mode="updates")` 启动图，每完成一个节点，就收到该节点新增的状态并显示出来。这里的 `for` 循环只消费图执行事件，模型与工具之间的循环由图的边驱动。
+
+一次常见执行顺序是：模型发出 `read_file` 请求 → 工具节点读文件 → 模型看到工具结果并回答。读取失败时，工具节点返回错误，模型可继续请求其他路径或如实说明失败。
+
+本次真实 DeepSeek 运行已验证这条路径，共调用模型两次。终端输出摘录（省略工具返回的文件正文与最终回答中的原文）：
+
+```text
+[1] 调用模型
+    工具请求：read_file {'path': 'notes.txt'}
+[2] 调用模型
+统计结果：文件共 5 行，其中第 3 行为空行，因此非空行数为 4 行。
+```
+
+## 当前边界
+
+- 直接依赖为 `langgraph` 与 `langchain-deepseek`，具体版本锁定在 `uv.lock`；不需要启动额外服务。
+- 工具只读练习目录中的 UTF-8 文件，每次最多 16000 字符；目录检查不是操作系统级沙箱。
+- 最多调用模型 6 次；图步数还包含工具节点，通过单独的 `recursion_limit` 兜底。
+- HTTP 超时默认 30 秒，SDK 重试次数设为 0；异常会使命令以非零状态退出。
+- 模型返回非空文本且没有工具请求时结束；这一步没有独立的答案验收器。
+- 图状态只保留在当前运行的内存中；未配置 checkpointer，没有跨进程记忆、断点恢复或额外轨迹文件。
+- `.env`、已有运行记录、本地记忆与 IDE 文件不纳入提交。旧的手写循环可从 Git 历史找回。
+
+对照阅读：[LangGraph 官方 Quickstart](https://docs.langchain.com/oss/python/langgraph/quickstart)、[ChatDeepSeek 集成](https://docs.langchain.com/oss/python/integrations/chat/deepseek)。
