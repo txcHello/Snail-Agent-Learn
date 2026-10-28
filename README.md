@@ -12,6 +12,7 @@
 | [02_tool_types](lessons/02_tool_types/README.md) | 五类交互：感知、执行、子 Agent 协作、外部事件触发、本地用户沟通 |
 | [03_debugger_startup](lessons/03_debugger_startup/README.md) | 基于第二课修复 PyCharm / runpy 启动时的同目录模块导入，并保留回归测试 |
 | [04_learning_paradigms](lessons/04_learning_paradigms/README.md) | 概念学习文档：后训练、上下文学习、外部化学习，以及与文件 Agent 和 harness 的关系 |
+| [05_agent_context](lessons/05_agent_context/README.md) | 图解 Agent 上下文的五类信息、工具调用消息变化、程序状态与消融实验 |
 
 第一课的代码保持归档时原样，文档中的启动路径已更新。第二课独立保存完整实现，不导入第一课代码。根目录只保留课程导航和共享的项目配置。
 
@@ -55,6 +56,6 @@ uv run python -X utf8 -m unittest discover -s lessons/03_debugger_startup -v
 
 先读第一课的 `agent.py`，再读第二课的 `agent.py` 和 `tools.py`。每课 README 展示新增代码、作用和运行方式；第二课文档还提供了逐项变化表。
 
-第四课是概念学习文档，包含对照表、示例、自测题和参考答案，无需运行程序。
+第四、五课是概念学习文档，包含配图、对照表、示例、自测题和参考答案，无需运行程序。
 
-后续新需求从 `05_...` 继续编号。uv 配置在根目录共享，新增依赖使用 `uv add`，移除使用 `uv remove`，提交 `uv.lock`。`.env`、`.venv/`、`.runs/` 和本地记忆不会上传。
+后续新需求从 `06_...` 继续编号。uv 配置在根目录共享，新增依赖使用 `uv add`，移除使用 `uv remove`，提交 `uv.lock`。`.env`、`.venv/`、`.runs/` 和本地记忆不会上传。
