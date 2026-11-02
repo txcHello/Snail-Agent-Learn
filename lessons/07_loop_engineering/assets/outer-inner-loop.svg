@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="1020" viewBox="0 0 1000 1020" role="img" aria-labelledby="title desc">
+  <title id="title">外层任务循环包含内层 ReAct</title>
+  <desc id="desc">外层发现任务、检查已有产物、选择待办，再运行内层模型与工具循环。报告验收通过后保存完成状态，否则按预算恢复或失败。没有待办或本轮预算耗尽时停止。</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0 L10 5 L0 10" fill="none" stroke="#52647b" stroke-width="1.5"/></marker>
+    <style>text{font-family:'Microsoft YaHei','Noto Sans CJK SC',sans-serif;fill:#19334f} .t{font-size:31px;font-weight:700}.h{font-size:25px;font-weight:700}.b{font-size:23px}.s{font-size:21px}.line{fill:none;stroke:#52647b;stroke-width:2.5;marker-end:url(#arrow)}</style>
+  </defs>
+  <rect width="1000" height="1020" rx="22" fill="#f5f8fc"/>
+  <text x="42" y="57" class="t">一次任务怎么做？下一项任务怎么办？</text>
+  <text x="42" y="96" class="b">内层 ReAct 负责执行，外层 Loop 负责任务生命周期</text>
+  <rect x="36" y="125" width="928" height="836" rx="20" fill="white" stroke="#82a8cf" stroke-width="2"/>
+  <text x="63" y="168" class="h">外层 · loop.py</text>
+  <rect x="210" y="192" width="580" height="88" rx="13" fill="#eaf2fc"/>
+  <text x="500" y="228" text-anchor="middle" class="h">恢复检查 → 发现任务 → 选择 pending</text>
+  <text x="500" y="260" text-anchor="middle" class="s">读取持久状态和输入快照；检查本轮执行预算</text>
+  <path d="M500 280 V322" class="line"/>
+  <rect x="210" y="323" width="580" height="60" rx="12" fill="#eaf2fc"/>
+  <text x="500" y="361" text-anchor="middle" class="b">先保存 running，尝试次数 +1</text>
+  <path d="M500 383 V423" class="line"/>
+  <rect x="140" y="423" width="720" height="202" rx="16" fill="#f0f8f3" stroke="#78ad8c" stroke-width="2"/>
+  <text x="170" y="464" class="h">内层 · agent.py / LangGraph</text>
+  <rect x="175" y="486" width="190" height="63" rx="10" fill="#d9eddf"/>
+  <text x="270" y="526" text-anchor="middle" class="b">模型选择行动</text>
+  <rect x="425" y="486" width="190" height="63" rx="10" fill="#d9eddf"/>
+  <text x="520" y="526" text-anchor="middle" class="b">执行工具</text>
+  <path d="M365 517 H422" class="line"/>
+  <path d="M520 549 V576 H270 V552" class="line"/>
+  <text x="650" y="520" class="b">读取 / 计算</text>
+  <text x="650" y="555" class="b">写入报告</text>
+  <text x="370" y="608" class="s">观察工具反馈，直到提出结束</text>
+  <path d="M500 625 V665" class="line"/>
+  <rect x="210" y="665" width="580" height="77" rx="12" fill="#fff2d9"/>
+  <text x="500" y="698" text-anchor="middle" class="h">验收真实报告，与本任务输入核对</text>
+  <text x="500" y="728" text-anchor="middle" class="s">“模型说完成”不能代替程序验收</text>
+  <path d="M355 742 V788" class="line"/>
+  <path d="M655 742 V788" class="line"/>
+  <rect x="173" y="789" width="322" height="66" rx="12" fill="#e0f0e6"/>
+  <text x="334" y="831" text-anchor="middle" class="b">通过：保存 completed</text>
+  <rect x="530" y="789" width="345" height="66" rx="12" fill="#fff0e9"/>
+  <text x="702" y="831" text-anchor="middle" class="b">失败：有限重试 / failed</text>
+  <path d="M173 821 H99 V235 H206" class="line"/>
+  <path d="M875 821 H910 V235 H795" class="line"/>
+  <text x="146" y="901" class="b">返回外层继续选择；无待办或本轮预算耗尽 → 停止</text>
+  <text x="42" y="997" class="s">恢复单位是任务与报告；本例不恢复模型内部状态或图中的具体节点。</text>
+</svg>

@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="760" viewBox="0 0 1000 760" role="img" aria-labelledby="title desc">
+  <title id="title">任务状态和中断恢复</title>
+  <desc id="desc">pending 选中后变为 running。实际报告验收通过成为 completed，允许重试且有预算则回到 pending，其余失败成为 failed。重启遇到 running 先验收报告：有效则完成，无效且有预算才重跑。已完成产物被删改则失败。</desc>
+  <defs>
+    <marker id="arrow" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0 L9 4.5 L0 9" fill="none" stroke="#52647b" stroke-width="1.5"/></marker>
+    <style>text{font-family:'Microsoft YaHei','Noto Sans CJK SC',sans-serif;fill:#19334f}.t{font-size:31px;font-weight:700}.h{font-size:26px;font-weight:700}.b{font-size:23px}.s{font-size:21px}.line{fill:none;stroke:#52647b;stroke-width:2.5;marker-end:url(#arrow)}</style>
+  </defs>
+  <rect width="1000" height="760" rx="22" fill="#f5f8fc"/>
+  <text x="40" y="57" class="t">状态落盘，让下一次启动知道从哪里继续</text>
+  <rect x="50" y="130" width="230" height="90" rx="14" fill="#e5effb"/>
+  <text x="165" y="169" text-anchor="middle" class="h">pending</text><text x="165" y="202" text-anchor="middle" class="b">等待执行</text>
+  <rect x="385" y="130" width="230" height="90" rx="14" fill="#fff2d9"/>
+  <text x="500" y="169" text-anchor="middle" class="h">running</text><text x="500" y="202" text-anchor="middle" class="b">正在尝试</text>
+  <rect x="720" y="130" width="230" height="90" rx="14" fill="#def0e4"/>
+  <text x="835" y="169" text-anchor="middle" class="h">completed</text><text x="835" y="202" text-anchor="middle" class="b">产物验收通过</text>
+  <path d="M280 175 H380" class="line"/><text x="300" y="150" class="s">选中</text>
+  <path d="M615 175 H715" class="line"/><text x="625" y="150" class="s">验收</text>
+  <path d="M500 220 V282 H165 V224" class="line"/><text x="215" y="315" class="b">可重试，并且还有次数</text>
+  <rect x="385" y="362" width="230" height="84" rx="14" fill="#fce7e3"/>
+  <text x="500" y="399" text-anchor="middle" class="h">failed</text><text x="500" y="432" text-anchor="middle" class="b">等待人工处理</text>
+  <path d="M550 220 V357" class="line"/><text x="574" y="340" class="s">不可重试 / 次数耗尽</text>
+  <path d="M835 220 V404 H619" class="line"/><text x="850" y="278" class="s">报告</text><text x="850" y="311" class="s">删改</text>
+  <rect x="40" y="491" width="920" height="218" rx="16" fill="white" stroke="#82a8cf" stroke-width="2"/>
+  <text x="66" y="534" class="h">重启时看见 running：先检查产物，不直接重做</text>
+  <text x="66" y="580" class="b">已有有效报告 → completed，不再次调用模型</text>
+  <text x="66" y="624" class="b">没有有效报告 + 剩余次数 → pending，在新目录重跑</text>
+  <text x="66" y="668" class="b">没有有效报告 + 次数耗尽 → failed，停止自动尝试</text>
+  <text x="42" y="743" class="s">每项任务最多两次尝试；进程重启不会清零次数。</text>
+</svg>
