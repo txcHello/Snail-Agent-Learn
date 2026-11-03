@@ -1254,12 +1254,14 @@ version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
     { name = "langchain-deepseek" },
+    { name = "langchain-openai" },
     { name = "langgraph" },
 ]
 
 [package.metadata]
 requires-dist = [
     { name = "langchain-deepseek", specifier = ">=1.1.1" },
+    { name = "langchain-openai", specifier = ">=1.7.3" },
     { name = "langgraph", specifier = ">=1.2.18" },
 ]
 

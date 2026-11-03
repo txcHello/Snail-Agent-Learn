@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="820" viewBox="0 0 1000 820" role="img" aria-labelledby="title desc">
+  <title id="title">模型对照评估流程</title>
+  <desc id="desc">固定输入、人工金标准和Harness。模型、样例和重复轮次组成任务矩阵。每项独立执行并保留轨迹和报告，评分器检查金标准、行为、耗时与token，最后汇总质量、速度和配置价格估算成本。金标准仅提供给评分器，不发送给模型。</desc>
+  <defs>
+    <marker id="arrow" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0 L9 4.5 L0 9" fill="none" stroke="#52647b" stroke-width="1.5"/></marker>
+    <style>text{font-family:'Microsoft YaHei','Noto Sans CJK SC',sans-serif;fill:#19334f}.title{font-size:31px;font-weight:700}.head{font-size:25px;font-weight:700}.body{font-size:23px}.small{font-size:21px}.line{fill:none;stroke:#52647b;stroke-width:2.5;marker-end:url(#arrow)}</style>
+  </defs>
+  <rect width="1000" height="820" rx="22" fill="#f5f8fc"/>
+  <text x="40" y="58" class="title">相同任务与 Harness，逐项测量，再比较</text>
+  <text x="40" y="102" class="body">一次评估 = 候选模型 × 样例 × 重复轮次</text>
+  <rect x="45" y="141" width="570" height="94" rx="14" fill="#e7f0fc"/>
+  <text x="70" y="179" class="head">输入样例 + 固定提示、工具和预算</text>
+  <text x="70" y="215" class="body">每项保存快照；执行顺序随机打乱并留档</text>
+  <path d="M330 235 V273" class="line"/>
+  <rect x="45" y="277" width="570" height="94" rx="14" fill="#e7f0fc"/>
+  <text x="70" y="315" class="head">运行一项 ReAct，记录返回或异常</text>
+  <text x="70" y="351" class="body">真实模型 → 工具反馈 → 实际报告</text>
+  <path d="M330 371 V409" class="line"/>
+  <rect x="45" y="413" width="570" height="94" rx="14" fill="#fff1d9"/>
+  <text x="70" y="451" class="head">保留轨迹、耗时和 API 返回的 token</text>
+  <text x="70" y="487" class="body">失败任务也记录；缺失用量标为未知</text>
+  <path d="M330 507 V545" class="line"/>
+  <rect x="45" y="549" width="570" height="94" rx="14" fill="#e3f1e9"/>
+  <text x="70" y="587" class="head">确定性评分器：查产物，也查行为</text>
+  <text x="70" y="623" class="body">金标准、调用格式、执行顺序与故障恢复</text>
+  <rect x="675" y="415" width="280" height="94" rx="14" fill="#f1eafb"/>
+  <text x="700" y="453" class="head">人工写定的金标准</text>
+  <text x="700" y="489" class="small">不发给模型或工具</text>
+  <path d="M815 509 V596 H620" class="line"/>
+  <path d="M330 643 V681" class="line"/>
+  <rect x="45" y="685" width="910" height="78" rx="14" fill="#d6eadd"/>
+  <text x="70" y="720" class="head">明细 + 汇总：质量、时间、调用次数、估算成本</text>
+  <text x="70" y="749" class="small">先设验收门槛，再看达标候选；少量通过不等于生产成功率为 100%</text>
+  <text x="40" y="800" class="small">费用按配置单价估算；网络失败无 usage 时，不能把未知费用当作零。</text>
+</svg>
