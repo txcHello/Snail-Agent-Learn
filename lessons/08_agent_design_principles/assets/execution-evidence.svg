@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="830" viewBox="0 0 1000 830" role="img" aria-labelledby="title desc">
+  <title id="title">从意图到完成的执行证据</title>
+  <desc id="desc">简短计划表示准备做什么，工具调用请求表示模型选择的行动，工具结果表示执行反馈，验收表示实际检查到的产物状态，最后才能保存完成状态。每一步的证据不能由前一步的声明替代。</desc>
+  <defs>
+    <marker id="arrow" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0 L9 4.5 L0 9" fill="none" stroke="#52647b" stroke-width="1.5"/></marker>
+    <style>text{font-family:'Microsoft YaHei','Noto Sans CJK SC',sans-serif;fill:#19334f}.title{font-size:31px;font-weight:700}.head{font-size:25px;font-weight:700}.body{font-size:23px}.small{font-size:21px}.line{fill:none;stroke:#52647b;stroke-width:2.5;marker-end:url(#arrow)}</style>
+  </defs>
+  <rect width="1000" height="830" rx="22" fill="#f5f8fc"/>
+  <text x="40" y="58" class="title">计划、请求、执行和验收是不同的证据</text>
+  <text x="40" y="102" class="body">沿任务轨迹逐步检查，才能判断哪里成功、哪里失败</text>
+  <rect x="50" y="139" width="490" height="88" rx="14" fill="#e7f0fc"/>
+  <text x="76" y="175" class="head">1. 简短计划</text>
+  <text x="76" y="210" class="body">准备读取、计算、生成报告</text>
+  <text x="590" y="179" class="body">说明意图</text><text x="590" y="211" class="small">尚不能证明已经执行</text>
+  <path d="M295 227 V263" class="line"/>
+  <rect x="50" y="267" width="490" height="88" rx="14" fill="#e7f0fc"/>
+  <text x="76" y="303" class="head">2. 工具调用请求</text>
+  <text x="76" y="338" class="body">write_report()</text>
+  <text x="590" y="307" class="body">说明选择了行动</text><text x="590" y="339" class="small">还要看工具是否执行成功</text>
+  <path d="M295 355 V391" class="line"/>
+  <rect x="50" y="395" width="490" height="88" rx="14" fill="#fff1d9"/>
+  <text x="76" y="431" class="head">3. 工具执行结果</text>
+  <text x="76" y="466" class="body">返回“已创建：报告路径”</text>
+  <text x="590" y="435" class="body">说明工具返回了结果</text><text x="590" y="467" class="small">还要核对任务要求与实际内容</text>
+  <path d="M295 483 V519" class="line"/>
+  <rect x="50" y="523" width="490" height="88" rx="14" fill="#e3f1e9"/>
+  <text x="76" y="559" class="head">4. 程序验收</text>
+  <text x="76" y="594" class="body">读取报告，对照输入检查</text>
+  <text x="590" y="563" class="body">给出检查依据</text><text x="590" y="595" class="small">结论限于检查实际覆盖的要求</text>
+  <path d="M295 611 V647" class="line"/>
+  <rect x="50" y="651" width="490" height="75" rx="14" fill="#d6eadd"/>
+  <text x="76" y="696" class="head">5. 保存 completed</text>
+  <text x="590" y="697" class="body">任务进入已完成状态</text>
+  <text x="40" y="782" class="small">透明依靠公开行动与验证证据；不要求展示完整的模型内部思考链。</text>
+</svg>

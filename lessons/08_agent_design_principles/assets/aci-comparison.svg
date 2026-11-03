@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="800" viewBox="0 0 1000 800" role="img" aria-labelledby="title desc">
+  <title id="title">收入汇总任务的工具接口对比</title>
+  <desc id="desc">模糊接口 execute 的操作名和数据格式不明确。收入任务使用 read_file、calculate_totals、write_report 三个清楚的工具，程序约束输入文件、计算前置条件和不覆盖旧文件，再通过验收检查报告。</desc>
+  <defs><style>text{font-family:'Microsoft YaHei','Noto Sans CJK SC',sans-serif;fill:#19334f}.title{font-size:31px;font-weight:700}.head{font-size:26px;font-weight:700}.body{font-size:23px}.small{font-size:21px}.code{font-family:Consolas,monospace;font-size:24px}</style></defs>
+  <rect width="1000" height="800" rx="22" fill="#f5f8fc"/>
+  <text x="40" y="58" class="title">让工具职责、输入与反馈都容易理解</text>
+  <text x="40" y="102" class="body">以固定的收入汇总任务为例，减少模型不必要的猜测</text>
+  <rect x="40" y="141" width="440" height="408" rx="16" fill="#fcece8"/>
+  <text x="66" y="185" class="head">缺少说明的通用接口</text>
+  <text x="66" y="239" class="code">execute(action, data)</text>
+  <text x="66" y="294" class="body">action 允许哪些值？</text>
+  <text x="66" y="336" class="body">data 是路径还是 JSON？</text>
+  <text x="66" y="378" class="body">会创建、覆盖还是删除？</text>
+  <text x="66" y="420" class="body">失败后怎样修正？</text>
+  <text x="66" y="513" class="small">语法可调用，语义仍然有歧义</text>
+  <rect x="520" y="141" width="440" height="408" rx="16" fill="#e3f1e9"/>
+  <text x="546" y="185" class="head">职责清楚的任务工具</text>
+  <text x="546" y="239" class="code">read_file(path)</text>
+  <text x="546" y="274" class="small">仅允许两份指定输入文件</text>
+  <text x="546" y="326" class="code">calculate_totals()</text>
+  <text x="546" y="361" class="small">程序读取输入，用 Decimal 计算</text>
+  <text x="546" y="413" class="code">write_report()</text>
+  <text x="546" y="448" class="small">必须先计算；拒绝覆盖已有报告</text>
+  <text x="546" y="513" class="small">程序掌管当前任务已确定的选择</text>
+  <rect x="40" y="577" width="920" height="155" rx="16" fill="white" stroke="#82a8cf" stroke-width="2"/>
+  <text x="66" y="620" class="head">防呆发生在执行边界，验收发生在结果检查</text>
+  <text x="66" y="665" class="body">非法文件名 → 拒绝读取　　未计算 → 拒绝写入</text>
+  <text x="66" y="706" class="body">通过工具约束后 → 仍要核对实际报告是否满足要求</text>
+  <text x="40" y="774" class="small">需要用户或模型做出的选择，应提供明确参数；参数数量少不等于接口一定好。</text>
+</svg>

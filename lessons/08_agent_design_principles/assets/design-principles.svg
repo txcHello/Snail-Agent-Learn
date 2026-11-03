@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="560" viewBox="0 0 1000 560" role="img" aria-labelledby="title desc">
+  <title id="title">Agent 设计三原则</title>
+  <desc id="desc">保持简单关注流程结构与必要复杂度，保持透明关注意图、行动与验收证据，ACI 关注工具名称、参数、结果和错误反馈。三者一起帮助定位错误、减少误用并判断完成。</desc>
+  <defs><style>text{font-family:'Microsoft YaHei','Noto Sans CJK SC',sans-serif;fill:#19334f}.title{font-size:31px;font-weight:700}.head{font-size:27px;font-weight:700}.body{font-size:23px}.small{font-size:21px}</style></defs>
+  <rect width="1000" height="560" rx="22" fill="#f5f8fc"/>
+  <text x="40" y="58" class="title">让 Agent 容易理解、可以检查、减少误用</text>
+  <text x="40" y="103" class="body">三条原则分别作用于结构、执行证据和交互接口</text>
+  <rect x="40" y="143" width="290" height="318" rx="16" fill="#e7f0fc"/>
+  <text x="66" y="191" class="head">保持简单</text>
+  <text x="66" y="237" class="body">关注：系统结构</text>
+  <text x="66" y="285" class="body">先解决实际问题</text>
+  <text x="66" y="323" class="body">必要时增加机制</text>
+  <text x="66" y="361" class="body">保留清楚的调用链</text>
+  <text x="66" y="424" class="small">能解释每一层的用途</text>
+  <rect x="355" y="143" width="290" height="318" rx="16" fill="#e3f1e9"/>
+  <text x="381" y="191" class="head">保持透明</text>
+  <text x="381" y="237" class="body">关注：执行证据</text>
+  <text x="381" y="285" class="body">计划说明意图</text>
+  <text x="381" y="323" class="body">轨迹记录行动</text>
+  <text x="381" y="361" class="body">验收检查产物</text>
+  <text x="381" y="424" class="small">能定位失败发生在哪</text>
+  <rect x="670" y="143" width="290" height="318" rx="16" fill="#fff1d9"/>
+  <text x="696" y="191" class="head">设计好 ACI</text>
+  <text x="696" y="237" class="body">关注：工具交互</text>
+  <text x="696" y="285" class="body">名称与职责清楚</text>
+  <text x="696" y="323" class="body">参数有格式与边界</text>
+  <text x="696" y="361" class="body">反馈支持下一步行动</text>
+  <text x="696" y="424" class="small">用接口减少常见误用</text>
+  <text x="40" y="514" class="body">例：三个明确工具 + 可查看轨迹 + 写入前检查 + 实际报告验收</text>
+</svg>

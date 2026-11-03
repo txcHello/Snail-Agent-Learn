@@ -15,6 +15,7 @@
 | [05_agent_context](lessons/05_agent_context/README.md) | 图解 Agent 上下文的五类信息、工具调用消息变化、程序状态与消融实验 |
 | [06_react_loop](lessons/06_react_loop/README.md) | 实现 ReAct 式多币种汇总：真实模型、工具反馈循环、公开轨迹和报告验收 |
 | [07_loop_engineering](lessons/07_loop_engineering/README.md) | 在 ReAct 外增加任务循环：发现、输入快照、验收、持久状态、有限重试与中断恢复 |
+| [08_agent_design_principles](lessons/08_agent_design_principles/README.md) | 图解 Agent 设计三原则：保持简单、保持透明、设计易理解且有防呆机制的 ACI |
 
 第一课的代码保持归档时原样，文档中的启动路径已更新。第二课独立保存完整实现，不导入第一课代码。根目录只保留课程导航和共享的项目配置。
 
@@ -66,8 +67,8 @@ uv run --locked python -X utf8 -m unittest discover -s lessons/07_loop_engineeri
 
 先读第一课的 `agent.py`，再读第二课的 `agent.py` 和 `tools.py`。每课 README 展示新增代码、作用和运行方式；第二课文档还提供了逐项变化表。
 
-第四、五课是概念学习文档，包含配图、对照表、示例、自测题和参考答案，无需运行程序。
+第四、五、八课是概念学习文档，包含配图、对照表、示例、自测题和参考答案，无需运行程序。
 
 第七课保留第六课的 LangGraph 内层，外层用本地任务目录和 JSON 状态演示 Loop 工程。默认状态目录固定在 `.runs/07_loop_engineering/default/`，重复启动会延续已有任务；详情见本课文档。
 
-后续新需求从 `08_...` 继续编号。uv 配置在根目录共享，新增依赖使用 `uv add`，移除使用 `uv remove`，提交 `uv.lock`。`.env`、`.venv/`、`.runs/` 和本地记忆不会上传。
+后续新需求从 `09_...` 继续编号。uv 配置在根目录共享，新增依赖使用 `uv add`，移除使用 `uv remove`，提交 `uv.lock`。`.env`、`.venv/`、`.runs/` 和本地记忆不会上传。
